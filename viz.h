@@ -3,6 +3,7 @@
 
 #include <SFML/Graphics.hpp>
 #include <vector>
+#include "graph.h"
 
 class Viz {
 public:
@@ -28,7 +29,7 @@ public:
     void setStartGoalNode(const sf::RenderWindow &window);
     
     // runs a graph search algorithm on the adj list, stores path and steps of exploration in arguments
-    void runSearch();
+    void runSearch(std::vector<int> (Graph::*search_path)(int, int), std::vector<std::vector<int>> (Graph::*search_explore)(int, int));
 
     // 
     void updateExploredShapes(const int &update_rate);
@@ -38,6 +39,8 @@ public:
     std::vector<sf::CircleShape*> getNodes();
 
     std::vector<sf::VertexArray> getEdges();
+
+    std::vector<std::vector<int>> getAdj();
 
 private:
     // contains nodes (circles) to be drawn

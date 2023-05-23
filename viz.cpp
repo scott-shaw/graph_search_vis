@@ -56,11 +56,10 @@ void Viz::addLine() {
     }
 }
 
-void Viz::runSearch() {
-    std::cout << "RUNNING BFS" << std::endl;
+void Viz::runSearch(std::vector<int> (Graph::*search_path)(int, int), std::vector<std::vector<int>> (Graph::*search_explore)(int, int)) {
     Graph g(m_adj);
-    std::vector<int> pafh = g.BFS_PATH(m_start_node, m_goal_node);
-    std::vector<std::vector<int>> exp = g.BFS_EXPLORE(m_start_node, m_goal_node);
+    std::vector<int> pafh = (g.*search_path)(m_start_node, m_goal_node);
+    std::vector<std::vector<int>> exp = (g.*search_explore)(m_start_node, m_goal_node);
     m_path.insert(m_path.end(), pafh.begin(), pafh.end());
     m_explore.insert(m_explore.end(), exp.begin(), exp.end());
     std::cout << "PATH FOUND: ";
@@ -141,7 +140,9 @@ std::vector<sf::VertexArray> Viz::getEdges() {
     return m_lines;
 }
 
-
+std::vector<std::vector<int>> Viz::getAdj() {
+    return m_adj;
+}
 
 
 

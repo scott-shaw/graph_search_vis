@@ -1,7 +1,11 @@
 #include <SFML/Graphics.hpp>
 #include "viz.h"
+#include "graph.h"
+#include "start.h"
 
 int main() {
+    std::string algo = chooseAlgo();
+
     sf::RenderWindow window(sf::VideoMode(1280, 800), "Graph Search Vis");
     
     window.setFramerateLimit(60);
@@ -26,7 +30,10 @@ int main() {
                 case sf::Event::KeyPressed:
                     if(event.key.code == sf::Keyboard::Enter) {
                         can_edit = false;
-                        gs_viz.runSearch();
+                        if(algo == "BFS")
+                            gs_viz.runSearch(&Graph::BFS_PATH, &Graph::BFS_EXPLORE);
+                        else if(algo == "DFS")
+                            gs_viz.runSearch(&Graph::DFS_PATH, &Graph::DFS_EXPLORE);
                     }
                     else if(event.key.code == sf::Keyboard::Space) {
                         gs_viz.setStartGoalNode(window);
