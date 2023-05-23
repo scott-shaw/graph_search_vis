@@ -57,6 +57,12 @@ void Viz::addLine() {
 }
 
 void Viz::runSearch(std::vector<int> (Graph::*search_path)(int, int), std::vector<std::vector<int>> (Graph::*search_explore)(int, int)) {
+    if(m_nodes_pre_search.empty())
+        m_nodes_pre_search = m_nodes;
+    else
+        resetSearch();
+    m_path.push_back(m_start_node);
+    m_explore.push_back({m_start_node});
     Graph g(m_adj);
     std::vector<int> pafh = (g.*search_path)(m_start_node, m_goal_node);
     std::vector<std::vector<int>> exp = (g.*search_explore)(m_start_node, m_goal_node);
@@ -80,8 +86,6 @@ void Viz::setStartGoalNode(const sf::RenderWindow &window) {
             shape->setFillColor(sf::Color(0, 0, 255));
             m_nodes.at(collides) = shape;
             m_start_node = collides;
-            m_path.push_back(m_start_node);
-            m_explore.push_back({m_start_node});
             std::cout << "SET START NODE TO: " << collides << std::endl;
         }
     }
@@ -126,6 +130,8 @@ void Viz::updateExploredShapes(const int &update_rate) {
         }
         m_clock_cnt = 0;
     }
+    //if(m_path_idx == m_path.size())
+    //    resetSearch();
 }
 
 void Viz::updateClock(const double &dt) {
@@ -144,5 +150,12 @@ std::vector<std::vector<int>> Viz::getAdj() {
     return m_adj;
 }
 
-
+void Viz::resetSearch() {
+    std::cout << "RESETTING SEARCH NODES" << std::endl;
+    m_path = {};
+    m_explore = {};
+    m_explore_idx = 0;
+    m_path_idx = 0;
+    m_nodes = m_nodes_pre_search;
+}
 

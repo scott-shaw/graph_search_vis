@@ -7,7 +7,7 @@ std::string chooseAlgo() {
 
     std::string algo;
 
-    sf::RenderWindow start_window(sf::VideoMode(400, 400), "Graph Search Vis");
+    sf::RenderWindow start_window(sf::VideoMode(400, 400), "Graph Search Viz");
     start_window.setFramerateLimit(60);
     sf::Font dejavu_mono;
     dejavu_mono.loadFromFile("/usr/share/fonts/truetype/dejavu/DejaVuSansMono.ttf");
