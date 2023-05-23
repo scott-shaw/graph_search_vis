@@ -1,1 +1,1 @@
-# graph_search_vis
+# graph_search_viz
