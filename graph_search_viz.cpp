@@ -8,6 +8,9 @@
  * Fix algo selector window (i.e., not in header)
  * Fix exploration (so dfs looks correct)
  * Implement more algorithms (IDS, A*, etc)
+ * Add debug options to sidebar (clear nodes, clear edges, reset start/goal nodes, etc)
+ *
+ *
  */
 
 int main() {
