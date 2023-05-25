@@ -61,7 +61,7 @@ int main() {
         gs_viz.updateExploredShapes(500);
         gs_viz.updateClock(dt.asMilliseconds());
 
-        algo = sidebar.update(event, window);
+        algo = sidebar.update(gs_viz, event, window);
 
         // draw objects
         window.clear();

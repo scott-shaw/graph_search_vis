@@ -150,6 +150,12 @@ std::vector<std::vector<int>> Viz::getAdj() {
     return m_adj;
 }
 
+void Viz::clearGraph() {
+    m_adj = {};
+    m_nodes = {};
+    m_lines = {};
+}
+
 void Viz::resetSearch() {
     std::cout << "RESETTING SEARCH NODES" << std::endl;
     m_path = {};

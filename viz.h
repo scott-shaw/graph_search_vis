@@ -44,6 +44,8 @@ public:
 
     void resetSearch();
 
+    void clearGraph();
+
 private:
     // contains nodes (circles) to be drawn
     std::vector<sf::CircleShape*> m_nodes;

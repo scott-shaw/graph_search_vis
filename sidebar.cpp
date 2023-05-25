@@ -12,6 +12,9 @@ GUI::Sidebar::Sidebar(const sf::Font &font, const std::string &algo, const sf::V
 
     GUI::Button algo_selector(sf::Vector2f(10,10), m_font, "Algorithm\nSelection", char_size);
     m_algo_selector = algo_selector;
+    
+    GUI::Button clear_all (sf::Vector2f(10,80), m_font, "Clear All", char_size);
+    m_clear_all = clear_all;
 
     m_curr_algo.setFont(m_font);
     m_curr_algo.setString("Current Algo: "+m_algo);
@@ -26,7 +29,7 @@ bool GUI::Sidebar::mouseNearSidebar(sf::RenderWindow &window, int spacing) {
             m_sidebar_background.getGlobalBounds().contains(sf::Vector2f(mouse_pos.x-spacing, mouse_pos.y-spacing));
 }
 
-std::string GUI::Sidebar::update(sf::Event& e, sf::RenderWindow& window) {
+std::string GUI::Sidebar::update(Viz &gs_viz, sf::Event& e, sf::RenderWindow& window) {
     m_algo_selector.update(e, window);
     bool algo_sel_state = m_algo_selector.getState();
     if(algo_sel_state != true && algo_sel_state != false)
@@ -36,11 +39,21 @@ std::string GUI::Sidebar::update(sf::Event& e, sf::RenderWindow& window) {
         m_algo = chooseAlgo();
         m_curr_algo.setString("Current Algo: "+m_algo);
     }
+    m_clear_all.update(e, window);
+    bool clear_all_state = m_clear_all.getState();
+    if(clear_all_state != true && clear_all_state != false)
+        clear_all_state = false;
+    if(clear_all_state) {
+        gs_viz.clearGraph(); 
+    }
+
+
     return m_algo;
 }
 
 void GUI::Sidebar::draw(sf::RenderTarget& target, sf::RenderStates states) const {
     target.draw(m_sidebar_background, states);
     target.draw(m_algo_selector, states);
+    target.draw(m_clear_all, states);
     target.draw(m_curr_algo, states);
 }
