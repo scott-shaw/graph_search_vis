@@ -19,6 +19,8 @@ namespace GUI {
         sf::RectangleShape m_sidebar_background;
         Button m_algo_selector;
         Button m_clear_all;
+        Button m_clear_edges;
+        Button m_reset_sg_nodes;
         sf::Text m_curr_algo;
     }; 
 

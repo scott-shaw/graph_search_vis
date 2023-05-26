@@ -45,6 +45,10 @@ public:
     void resetSearch();
 
     void clearGraph();
+    
+    void clearEdges();
+    
+    void resetSGNodes();
 
 private:
     // contains nodes (circles) to be drawn
@@ -77,6 +81,7 @@ private:
     
     // radius of nodes
     int m_radius;
+    bool m_can_edit = true;
 
 };
 

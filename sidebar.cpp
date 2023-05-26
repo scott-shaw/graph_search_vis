@@ -13,8 +13,14 @@ GUI::Sidebar::Sidebar(const sf::Font &font, const std::string &algo, const sf::V
     GUI::Button algo_selector(sf::Vector2f(10,10), m_font, "Algorithm\nSelection", char_size);
     m_algo_selector = algo_selector;
     
-    GUI::Button clear_all (sf::Vector2f(10,80), m_font, "Clear All", char_size);
+    GUI::Button clear_all (sf::Vector2f(10,80), m_font, "CE All", char_size);
     m_clear_all = clear_all;
+
+    GUI::Button clear_edges (sf::Vector2f(10,110), m_font, "CE Edges", char_size);
+    m_clear_edges = clear_edges;
+    
+    GUI::Button reset_sg (sf::Vector2f(10,146), m_font, "CE S/G", char_size);
+    m_reset_sg_nodes = reset_sg;
 
     m_curr_algo.setFont(m_font);
     m_curr_algo.setString("Current Algo: "+m_algo);
@@ -47,6 +53,21 @@ std::string GUI::Sidebar::update(Viz &gs_viz, sf::Event& e, sf::RenderWindow& wi
         gs_viz.clearGraph(); 
     }
 
+    m_clear_edges.update(e, window);
+    bool clear_edges_state = m_clear_edges.getState();
+    if(clear_edges_state != true && clear_edges_state != false)
+        clear_edges_state = false;
+    if(clear_edges_state) {
+        gs_viz.clearEdges(); 
+    }
+    
+    m_reset_sg_nodes.update(e, window);
+    bool reset_sg_state = m_reset_sg_nodes.getState();
+    if(reset_sg_state != true && reset_sg_state != false)
+        reset_sg_state = false;
+    if(reset_sg_state) {
+        gs_viz.resetSGNodes(); 
+    }
 
     return m_algo;
 }
@@ -55,5 +76,8 @@ void GUI::Sidebar::draw(sf::RenderTarget& target, sf::RenderStates states) const
     target.draw(m_sidebar_background, states);
     target.draw(m_algo_selector, states);
     target.draw(m_clear_all, states);
+    target.draw(m_clear_edges, states);
+    target.draw(m_reset_sg_nodes, states);
+
     target.draw(m_curr_algo, states);
 }

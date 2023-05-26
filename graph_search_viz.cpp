@@ -8,8 +8,7 @@
  * Fix algo selector window (i.e., not in header)
  * Fix exploration (so dfs looks correct)
  * Implement more algorithms (IDS, A*, etc)
- * Add debug options to sidebar (clear nodes, clear edges, reset start/goal nodes, etc)
- *
+ * Fix clear operations (they are slow currently -- i.e., cant do anything for a few secs after)
  *
  */
 
@@ -23,7 +22,6 @@ int main() {
     
     int radius = 20;
     Viz gs_viz(radius);
-    bool can_edit = true;
     
     std::string algo = "BFS";
     GUI::Sidebar sidebar(dejavu_mono, algo);
@@ -36,7 +34,7 @@ int main() {
                 case sf::Event::Closed:
                     window.close();
                 case sf::Event::MouseButtonPressed:
-                    if(can_edit && !sidebar.mouseNearSidebar(window, radius*2)) {
+                    if(!sidebar.mouseNearSidebar(window, radius*2)) {
                         if (event.mouseButton.button == sf::Mouse::Left)
                             gs_viz.addNode(event);
                         else
@@ -44,7 +42,6 @@ int main() {
                     }
                 case sf::Event::KeyPressed:
                     if(event.key.code == sf::Keyboard::Enter) {
-                        can_edit = false;
                         if(algo == "BFS")
                             gs_viz.runSearch(&Graph::BFS_PATH, &Graph::BFS_EXPLORE);
                         else if(algo == "DFS")

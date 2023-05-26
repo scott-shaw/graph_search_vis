@@ -23,7 +23,7 @@ int Viz::checkNodeCollision(int x, int y, int new_radius) {
 
 void Viz::addNode(sf::Event e) {
     int collides = checkNodeCollision(e.mouseButton.x, e.mouseButton.y, m_radius);
-    if(collides == -1) {
+    if(collides == -1 && m_can_edit) {
         sf::CircleShape *shape = new sf::CircleShape(m_radius);
         shape->setPosition(e.mouseButton.x-m_radius, e.mouseButton.y-m_radius);
         shape->setFillColor(sf::Color(100, 0, 50));
@@ -57,10 +57,15 @@ void Viz::addLine() {
 }
 
 void Viz::runSearch(std::vector<int> (Graph::*search_path)(int, int), std::vector<std::vector<int>> (Graph::*search_explore)(int, int)) {
+    if(m_start_node == -1 || m_goal_node == -1) {
+        std::cout << "Start/Goal nodes not specified" << std::endl;
+        return;
+    }
     if(m_nodes_pre_search.empty())
         m_nodes_pre_search = m_nodes;
     else
         resetSearch();
+    m_can_edit = false;
     m_path.push_back(m_start_node);
     m_explore.push_back({m_start_node});
     Graph g(m_adj);
@@ -154,6 +159,39 @@ void Viz::clearGraph() {
     m_adj = {};
     m_nodes = {};
     m_lines = {};
+    m_start_node = -1;
+    m_goal_node = -1;
+    m_can_edit = true;
+}
+
+void Viz::clearEdges() {
+    m_adj.clear();
+    for(auto node : m_nodes)
+        m_adj.push_back({});
+    m_lines.clear();
+    m_selected_line_nodes.clear();
+    m_selected_line_coords.clear();
+    m_can_edit = true;
+}
+
+void Viz::resetSGNodes() {
+    
+    if(m_start_node != -1) {
+        sf::CircleShape *shape = new sf::CircleShape(m_radius);
+        shape->setPosition(m_nodes.at(m_start_node)->getPosition());
+        shape->setFillColor(sf::Color(100, 0, 50));
+        m_nodes.at(m_start_node) = shape;
+    }
+    if(m_goal_node != -1) {
+        sf::CircleShape *shape = new sf::CircleShape(m_radius);
+        shape->setPosition(m_nodes.at(m_goal_node)->getPosition());
+        shape->setFillColor(sf::Color(100, 0, 50));
+        m_nodes.at(m_goal_node) = shape;
+    }
+
+    m_start_node = -1;
+    m_goal_node = -1;
+    m_can_edit = true;
 }
 
 void Viz::resetSearch() {
