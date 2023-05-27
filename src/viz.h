@@ -53,7 +53,6 @@ public:
 private:
     // contains nodes (circles) to be drawn
     std::vector<sf::CircleShape*> m_nodes;
-    std::vector<sf::CircleShape*> m_nodes_pre_search;
     
     // contains line objects to be drawn
     std::vector<sf::VertexArray> m_lines;

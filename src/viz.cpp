@@ -61,10 +61,7 @@ void Viz::runSearch(std::vector<std::vector<int>> (Graph::*search_path)(int, int
         std::cout << "Start/Goal nodes not specified" << std::endl;
         return;
     }
-    if(m_nodes_pre_search.empty())
-        m_nodes_pre_search = m_nodes;
-    else
-        resetSearch();
+    resetSearch();
     m_can_edit = false;
     m_path.push_back(m_start_node);
     Graph g(m_adj);
@@ -79,7 +76,6 @@ void Viz::runSearch(std::vector<std::vector<int>> (Graph::*search_path)(int, int
     for(int p : m_explore)
         std::cout << p << " ";
     std::cout << std::endl;
-
 }
 
 
@@ -163,6 +159,7 @@ void Viz::clearGraph() {
 }
 
 void Viz::clearEdges() {
+    resetSearch(); 
     m_adj.clear();
     for(auto node : m_nodes)
         m_adj.push_back({});
@@ -173,7 +170,7 @@ void Viz::clearEdges() {
 }
 
 void Viz::resetSGNodes() {
-    
+    resetSearch(); 
     if(m_start_node != -1) {
         sf::CircleShape *shape = new sf::CircleShape(m_radius);
         shape->setPosition(m_nodes.at(m_start_node)->getPosition());
@@ -193,11 +190,12 @@ void Viz::resetSGNodes() {
 }
 
 void Viz::resetSearch() {
-    std::cout << "RESETTING SEARCH NODES" << std::endl;
     m_path = {};
     m_explore = {};
     m_explore_idx = 0;
     m_path_idx = 0;
-    m_nodes = m_nodes_pre_search;
+    for(auto node : m_nodes) {
+        node->setOutlineThickness(0);
+    }
 }
 

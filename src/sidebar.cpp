@@ -37,37 +37,23 @@ bool GUI::Sidebar::mouseNearSidebar(sf::RenderWindow &window, int spacing) {
 
 std::string GUI::Sidebar::update(Viz &gs_viz, sf::Event& e, sf::RenderWindow& window) {
     m_algo_selector.update(e, window);
-    bool algo_sel_state = m_algo_selector.getState();
-    if(algo_sel_state != true && algo_sel_state != false)
-        algo_sel_state = false;
-    if(algo_sel_state) {
+    if(m_algo_selector.getState()) {
         m_algo_selector.setState(false);
         m_algo = chooseAlgo();
         m_curr_algo.setString("Current Algo: "+m_algo);
     }
+
     m_clear_all.update(e, window);
-    bool clear_all_state = m_clear_all.getState();
-    if(clear_all_state != true && clear_all_state != false)
-        clear_all_state = false;
-    if(clear_all_state) {
+    if(m_clear_all.getState())
         gs_viz.clearGraph(); 
-    }
 
     m_clear_edges.update(e, window);
-    bool clear_edges_state = m_clear_edges.getState();
-    if(clear_edges_state != true && clear_edges_state != false)
-        clear_edges_state = false;
-    if(clear_edges_state) {
+    if(m_clear_edges.getState())
         gs_viz.clearEdges(); 
-    }
     
     m_reset_sg_nodes.update(e, window);
-    bool reset_sg_state = m_reset_sg_nodes.getState();
-    if(reset_sg_state != true && reset_sg_state != false)
-        reset_sg_state = false;
-    if(reset_sg_state) {
+    if(m_reset_sg_nodes.getState())
         gs_viz.resetSGNodes(); 
-    }
 
     return m_algo;
 }
