@@ -9,6 +9,7 @@
  * Implement more algorithms (IDS, A*, etc)
  * Fix clear operations (they are slow currently -- i.e., cant do anything for a few secs after)
  * Change sidebar button spacing to be relative to global position of previous button (then add a fixed amount of spacing between all buttons)
+ * Draw idx numbers on nodes
  *
  */
 
@@ -43,9 +44,9 @@ int main() {
                 case sf::Event::KeyPressed:
                     if(event.key.code == sf::Keyboard::Enter) {
                         if(algo == "BFS")
-                            gs_viz.runSearch(&Graph::BFS_PATH, &Graph::BFS_EXPLORE);
+                            gs_viz.runSearch(&Graph::BFS);
                         else if(algo == "DFS")
-                            gs_viz.runSearch(&Graph::DFS_PATH, &Graph::DFS_EXPLORE);
+                            gs_viz.runSearch(&Graph::DFS);
                     }
                     else if(event.key.code == sf::Keyboard::Space) {
                         gs_viz.setStartGoalNode(window);
