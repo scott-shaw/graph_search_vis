@@ -35,6 +35,17 @@ std::string chooseAlgo() {
     dfs_text.setPosition(75,125);
     dfs_text.setFillColor(sf::Color(255,0,0));
 
+    sf::RectangleShape ids_button(sf::Vector2f(100, 50));
+    ids_button.setPosition(50, 200);
+    ids_button.setFillColor(sf::Color(50, 0, 100));
+    
+    sf::Text ids_text;
+    ids_text.setFont(dejavu_mono);
+    ids_text.setString("IDS");
+    ids_text.setCharacterSize(25);
+    ids_text.setPosition(75,200);
+    ids_text.setFillColor(sf::Color(255,0,0));
+
     while(start_window.isOpen()) {
         sf::Event event;
         while (start_window.pollEvent(event)) {
@@ -50,6 +61,10 @@ std::string chooseAlgo() {
                         algo = "DFS";
                         start_window.close();
                     }       
+                    else if(event.mouseButton.x > 50 && event.mouseButton.x < 150 && event.mouseButton.y > 200 && event.mouseButton.y < 250) {
+                        algo = "IDS";
+                        start_window.close();
+                    }       
             }
         }
         start_window.clear();
@@ -57,6 +72,8 @@ std::string chooseAlgo() {
         start_window.draw(bfs_text);
         start_window.draw(dfs_button);
         start_window.draw(dfs_text);
+        start_window.draw(ids_button);
+        start_window.draw(ids_text);
         start_window.display();
     }
 

@@ -56,7 +56,7 @@ void Viz::addLine() {
     }
 }
 
-void Viz::runSearch(std::vector<std::vector<int>> (Graph::*search_path)(int, int)) {
+void Viz::runSearch(std::vector<std::vector<int>> (Graph::*search_path)(const int&, const int&)const) {
     if(m_start_node == -1 || m_goal_node == -1) {
         std::cout << "Start/Goal nodes not specified" << std::endl;
         return;

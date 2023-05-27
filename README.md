@@ -3,6 +3,7 @@
 Visualizations of graph search algorithms such as:
 - BFS
 - DFS
+- IDS
 
 Built using SFML
 ```
