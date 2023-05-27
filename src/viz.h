@@ -29,7 +29,7 @@ public:
     void setStartGoalNode(const sf::RenderWindow &window);
     
     // runs a graph search algorithm on the adj list, stores path and steps of exploration in arguments
-    void runSearch(std::vector<int> (Graph::*search_path)(int, int), std::vector<std::vector<int>> (Graph::*search_explore)(int, int));
+    void runSearch(std::vector<int> (Graph::*search_path)(int, int), std::vector<int> (Graph::*search_explore)(int, int));
 
     // 
     void updateExploredShapes(const int &update_rate);
@@ -71,7 +71,7 @@ private:
     std::vector<int> m_path;
 
     // steps found from graph search
-    std::vector<std::vector<int>> m_explore;
+    std::vector<int> m_explore;
     
     int m_explore_idx = 0;
     int m_path_idx = 0;

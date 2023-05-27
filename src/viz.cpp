@@ -56,7 +56,7 @@ void Viz::addLine() {
     }
 }
 
-void Viz::runSearch(std::vector<int> (Graph::*search_path)(int, int), std::vector<std::vector<int>> (Graph::*search_explore)(int, int)) {
+void Viz::runSearch(std::vector<int> (Graph::*search_path)(int, int), std::vector<int> (Graph::*search_explore)(int, int)) {
     if(m_start_node == -1 || m_goal_node == -1) {
         std::cout << "Start/Goal nodes not specified" << std::endl;
         return;
@@ -70,7 +70,7 @@ void Viz::runSearch(std::vector<int> (Graph::*search_path)(int, int), std::vecto
     m_explore.push_back({m_start_node});
     Graph g(m_adj);
     std::vector<int> pafh = (g.*search_path)(m_start_node, m_goal_node);
-    std::vector<std::vector<int>> exp = (g.*search_explore)(m_start_node, m_goal_node);
+    std::vector<int> exp = (g.*search_explore)(m_start_node, m_goal_node);
     m_path.insert(m_path.end(), pafh.begin(), pafh.end());
     m_explore.insert(m_explore.end(), exp.begin(), exp.end());
     std::cout << "PATH FOUND: ";
@@ -112,15 +112,13 @@ void Viz::setStartGoalNode(const sf::RenderWindow &window) {
 void Viz::updateExploredShapes(const int &update_rate) {
     if(m_clock_cnt > update_rate && m_path.size() > 1) {
         if(m_explore_idx < m_explore.size()-1) {
-            std::vector<int> layer = m_explore.at(m_explore_idx);
-            for(int node : layer) {
-                sf::CircleShape *shape = new sf::CircleShape(m_radius);
-                shape->setPosition(m_nodes.at(node)->getPosition().x, m_nodes.at(node)->getPosition().y);
-                shape->setFillColor(m_nodes.at(node)->getFillColor());
-                shape->setOutlineThickness(5.0);
-                shape->setOutlineColor(sf::Color(255,255,255));
-                m_nodes.at(node) = shape;
-            }
+            int node = m_explore.at(m_explore_idx);
+            sf::CircleShape *shape = new sf::CircleShape(m_radius);
+            shape->setPosition(m_nodes.at(node)->getPosition().x, m_nodes.at(node)->getPosition().y);
+            shape->setFillColor(m_nodes.at(node)->getFillColor());
+            shape->setOutlineThickness(5.0);
+            shape->setOutlineColor(sf::Color(255,255,255));
+            m_nodes.at(node) = shape;
             m_explore_idx++;
         }
         else if(m_path_idx <= m_path.size()-1 && m_explore_idx == m_explore.size()-1) {

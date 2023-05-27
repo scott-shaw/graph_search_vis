@@ -11,6 +11,8 @@ sudo apt install libsfml-dev
 
 Compile & Run
 ```
-g++ *.cpp -o prog -lsfml-graphics -lsfml-window -lsfml-system && ./prog
+make
+make run
+make clean
 ```
 
