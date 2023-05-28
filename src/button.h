@@ -15,6 +15,8 @@ namespace GUI {
         void setTextColor(const sf::Color &color);
         bool getState() const;
         void setState(const bool &state);
+        sf::RectangleShape getRect() const;
+        std::string getText() const;
 
     private:
         virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;

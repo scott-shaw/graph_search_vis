@@ -77,4 +77,10 @@ void GUI::Button::draw(sf::RenderTarget& target, sf::RenderStates states) const 
     target.draw(m_text, states);
 }
 
+sf::RectangleShape GUI::Button::getRect() const {
+    return m_button;
+}
 
+std::string GUI::Button::getText() const {
+    return m_text.getString();
+}

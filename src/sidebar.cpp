@@ -1,6 +1,6 @@
 #include "sidebar.h"
-#include "start.h"
 #include <iostream>
+#include "algoselect.h"
 
 GUI::Sidebar::Sidebar(const sf::Font &font, const std::string &algo, const sf::Vector2f &size, const int &char_size) {
     m_font = font;
@@ -39,7 +39,11 @@ std::string GUI::Sidebar::update(Viz &gs_viz, sf::Event& e, sf::RenderWindow& wi
     m_algo_selector.update(e, window);
     if(m_algo_selector.getState()) {
         m_algo_selector.setState(false);
-        m_algo = chooseAlgo();
+        std::string previous = m_algo;
+        AlgoSelect as(m_font, {"BFS", "DFS", "IDS", "A*", "Greedy"}, 2, 40);
+        m_algo = as.getAlgo();
+        if(m_algo.size() == 0)
+            m_algo = previous;
         m_curr_algo.setString("Current Algo: "+m_algo);
     }
 
