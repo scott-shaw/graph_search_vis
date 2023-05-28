@@ -2,11 +2,12 @@
 #include "viz.h"
 #include "graph.h"
 
-Viz::Viz(const int &radius) {
+GUI::Viz::Viz(const int &radius, const sf::Font &font) {
     m_radius = radius;
+    m_font = font;
 }
 
-int Viz::checkNodeCollision(int x, int y, int new_radius) {
+int GUI::Viz::checkNodeCollision(int x, int y, int new_radius) {
     bool collides = false;
     int i = 0;
     for(auto node : m_nodes) {
@@ -21,7 +22,7 @@ int Viz::checkNodeCollision(int x, int y, int new_radius) {
     return -1;
 }
 
-void Viz::addNode(sf::Event e) {
+void GUI::Viz::addNode(sf::Event e) {
     int collides = checkNodeCollision(e.mouseButton.x, e.mouseButton.y, m_radius);
     if(collides == -1 && m_can_edit) {
         sf::CircleShape *shape = new sf::CircleShape(m_radius);
@@ -29,10 +30,14 @@ void Viz::addNode(sf::Event e) {
         shape->setFillColor(sf::Color(100, 0, 50));
         m_nodes.push_back(shape);
         m_adj.push_back({});
+        sf::Text txt(std::to_string(m_nodes.size()-1), m_font, m_radius*3/4);
+        txt.setFillColor(sf::Color(245,164,66));
+        txt.setPosition(shape->getPosition()+sf::Vector2f((shape->getGlobalBounds().width/2)-(txt.getLocalBounds().width/2), shape->getGlobalBounds().height/2-(txt.getLocalBounds().height)));
+        m_node_txt.push_back(txt);
     }
 }
 
-void Viz::selectNode(sf::Event e) {
+void GUI::Viz::selectNode(sf::Event e) {
     int collides = checkNodeCollision(e.mouseButton.x, e.mouseButton.y, 1);
     if(collides > -1) {
         m_selected_line_coords.push_back(sf::Vector2f(e.mouseButton.x, e.mouseButton.y));
@@ -40,7 +45,7 @@ void Viz::selectNode(sf::Event e) {
     }
 }
 
-void Viz::addLine() {
+void GUI::Viz::addLine() {
     if(m_selected_line_nodes.size() == 2) {
         // Draw edge and add to adj list if not a self edge
         if(m_selected_line_nodes.at(0) != m_selected_line_nodes.at(1)) {
@@ -56,7 +61,7 @@ void Viz::addLine() {
     }
 }
 
-void Viz::runSearch(std::vector<std::vector<int>> (Graph::*search_path)(const int&, const int&)const) {
+void GUI::Viz::runSearch(std::vector<std::vector<int>> (Graph::*search_path)(const int&, const int&)const) {
     if(m_start_node == -1 || m_goal_node == -1) {
         std::cout << "Start/Goal nodes not specified" << std::endl;
         return;
@@ -79,7 +84,7 @@ void Viz::runSearch(std::vector<std::vector<int>> (Graph::*search_path)(const in
 }
 
 
-void Viz::setStartGoalNode(const sf::RenderWindow &window) {
+void GUI::Viz::setStartGoalNode(const sf::RenderWindow &window) {
     if(m_start_node == -1) {
         sf::Vector2i pos = sf::Mouse::getPosition(window);
         int collides = checkNodeCollision(pos.x, pos.y, 1);
@@ -99,7 +104,7 @@ void Viz::setStartGoalNode(const sf::RenderWindow &window) {
             int radius = 20;
             sf::CircleShape *shape = new sf::CircleShape(radius);
             shape->setPosition(m_nodes.at(collides)->getPosition().x, m_nodes.at(collides)->getPosition().y);
-            shape->setFillColor(sf::Color(0, 255, 0));
+            shape->setFillColor(sf::Color(40, 105, 50));
             m_nodes.at(collides) = shape;
             m_goal_node = collides;
             std::cout << "SET GOAL NODE TO: " << collides << std::endl;
@@ -107,7 +112,7 @@ void Viz::setStartGoalNode(const sf::RenderWindow &window) {
     }
 }
 
-void Viz::updateExploredShapes(const int &update_rate) {
+void GUI::Viz::updateExploredShapes(const int &update_rate) {
     if(m_clock_cnt > update_rate && m_path.size() > 1) {
         if(m_explore_idx <= m_explore.size()-1) {
             int node = m_explore.at(m_explore_idx);
@@ -133,23 +138,23 @@ void Viz::updateExploredShapes(const int &update_rate) {
     }
 }
 
-void Viz::updateClock(const double &dt) {
+void GUI::Viz::updateClock(const double &dt) {
     m_clock_cnt += dt;
 }
 
-std::vector<sf::CircleShape*> Viz::getNodes() {
+std::vector<sf::CircleShape*> GUI::Viz::getNodes() {
     return m_nodes;
 }
 
-std::vector<sf::VertexArray> Viz::getEdges() {
+std::vector<sf::VertexArray> GUI::Viz::getEdges() {
     return m_lines;
 }
 
-std::vector<std::vector<int>> Viz::getAdj() {
+std::vector<std::vector<int>> GUI::Viz::getAdj() {
     return m_adj;
 }
 
-void Viz::clearGraph() {
+void GUI::Viz::clearGraph() {
     m_adj = {};
     m_nodes = {};
     m_lines = {};
@@ -158,7 +163,7 @@ void Viz::clearGraph() {
     m_can_edit = true;
 }
 
-void Viz::clearEdges() {
+void GUI::Viz::clearEdges() {
     resetSearch(); 
     m_adj.clear();
     for(auto node : m_nodes)
@@ -169,7 +174,7 @@ void Viz::clearEdges() {
     m_can_edit = true;
 }
 
-void Viz::resetSGNodes() {
+void GUI::Viz::resetSGNodes() {
     resetSearch(); 
     if(m_start_node != -1) {
         sf::CircleShape *shape = new sf::CircleShape(m_radius);
@@ -189,7 +194,7 @@ void Viz::resetSGNodes() {
     m_can_edit = true;
 }
 
-void Viz::resetSearch() {
+void GUI::Viz::resetSearch() {
     m_path = {};
     m_explore = {};
     m_explore_idx = 0;
@@ -199,3 +204,11 @@ void Viz::resetSearch() {
     }
 }
 
+void GUI::Viz::draw(sf::RenderTarget& target, sf::RenderStates states) const {
+    for(auto line : m_lines)
+        target.draw(line, states);
+    for(auto it=m_nodes.begin();it!=m_nodes.end();it++)
+        target.draw(**it, states);
+    for(auto t : m_node_txt)
+        target.draw(t, states);
+}

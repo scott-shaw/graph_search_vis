@@ -19,10 +19,11 @@ int main() {
     sf::Clock clock;
     
     sf::Font dejavu_mono;
-    dejavu_mono.loadFromFile("/usr/share/fonts/truetype/dejavu/DejaVuSansMono.ttf");
+    //dejavu_mono.loadFromFile("/usr/share/fonts/truetype/dejavu/DejaVuSansMono.ttf");
+    dejavu_mono.loadFromFile("/usr/share/fonts/truetype/ubuntu/Ubuntu-R.ttf");
     
     int radius = 20;
-    Viz gs_viz(radius);
+    GUI::Viz gs_viz(radius, dejavu_mono);
     
     std::string algo = "BFS";
     GUI::Sidebar sidebar(dejavu_mono, algo);
@@ -66,12 +67,7 @@ int main() {
         // draw objects
         window.clear();
         window.draw(sidebar);
-        for(auto line : gs_viz.getEdges())
-            window.draw(line);
-        auto nodes = gs_viz.getNodes();
-        for(auto it=nodes.begin();it!=nodes.end();it++) {
-            window.draw(**it);
-        }
+        window.draw(gs_viz);
         window.display();
     }
 }
