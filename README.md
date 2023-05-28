@@ -17,3 +17,9 @@ make run
 make clean
 ```
 
+Usage
+- Place nodes using left mouse button
+- Create edges between nodes using right mouse button
+- Assign nodes as start/goal using spacebar (start placed first)
+- Run selected search algorithm using enter
+- Change algorithm/clear nodes/edges using sidebar buttons

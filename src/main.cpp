@@ -5,7 +5,6 @@
 #include "sidebar.h"
 
 /* TODO
- * Fix algo selector window (i.e., not in header)
  * Implement more algorithms (IDS, A*, etc)
  * Fix clear operations (they are slow currently -- i.e., cant do anything for a few secs after)
  * Change sidebar button spacing to be relative to global position of previous button (then add a fixed amount of spacing between all buttons)
