@@ -2,6 +2,7 @@
 #define BUTTON_H
 
 #include <SFML/Graphics.hpp>
+#include "rounded_rect.h"
 
 namespace GUI {
     class Button : public sf::Drawable {
@@ -15,12 +16,13 @@ namespace GUI {
         void setTextColor(const sf::Color &color);
         bool getState() const;
         void setState(const bool &state);
-        sf::RectangleShape getRect() const;
+        sf::RoundedRectangleShape getRect() const;
         std::string getText() const;
 
     private:
         virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
-        sf::RectangleShape m_button;
+        sf::RoundedRectangleShape m_button;
+
         sf::Vector2f m_position;
         sf::Color m_button_color;
         bool m_state;
@@ -30,6 +32,5 @@ namespace GUI {
         sf::Color m_text_color;
     };
 }
-
 
 #endif

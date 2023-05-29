@@ -16,7 +16,7 @@ GUI::Button::Button(const sf::Vector2f &position, const sf::Font &font, const st
     m_text.setFillColor(m_text_color);
     m_text.setCharacterSize(char_size);
     
-    m_button = sf::RectangleShape(sf::Vector2f(m_text.getGlobalBounds().width*1.25, m_text.getGlobalBounds().height*1.5));
+    m_button = sf::RoundedRectangleShape(sf::Vector2f(m_text.getGlobalBounds().width*1.25, m_text.getGlobalBounds().height*1.5),10,10);
     m_button.setPosition(m_position);
     m_button.setFillColor(m_button_color);
     
@@ -77,7 +77,7 @@ void GUI::Button::draw(sf::RenderTarget& target, sf::RenderStates states) const 
     target.draw(m_text, states);
 }
 
-sf::RectangleShape GUI::Button::getRect() const {
+sf::RoundedRectangleShape GUI::Button::getRect() const {
     return m_button;
 }
 

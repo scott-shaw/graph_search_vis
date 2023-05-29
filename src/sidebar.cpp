@@ -2,25 +2,31 @@
 #include <iostream>
 #include "algoselect.h"
 
-GUI::Sidebar::Sidebar(const sf::Font &font, const std::string &algo, const sf::Vector2f &size, const int &char_size) {
+GUI::Sidebar::Sidebar(const sf::Font &font, const std::string &algo, const int &spacing, const int &char_size) {
     m_font = font;
     m_algo = algo;
 
-    m_sidebar_background.setSize(size);
+    std::vector<std::string> btn_titles{"Algorithm\nSelection", "CE All", "CE Edges", "CE S/G"};
+    int y_pos = spacing;
+    for(int i=0; i<btn_titles.size(); i++) {
+        GUI::Button b(sf::Vector2f(spacing,y_pos), m_font, btn_titles.at(i), char_size);
+        y_pos = b.getRect().getGlobalBounds().top + b.getRect().getGlobalBounds().height + spacing;
+        m_buttons.push_back(b);
+    }
+    
+    int x_max = 0;
+    int y_max = 0;
+    for(auto b : m_buttons) {
+        sf::FloatRect btn_rect = b.getRect().getGlobalBounds();
+        if(btn_rect.left+btn_rect.width > x_max)
+            x_max = btn_rect.left+btn_rect.width;
+        if(btn_rect.top+btn_rect.height > y_max)
+            y_max = btn_rect.top+btn_rect.height;
+    }
+
+    m_sidebar_background = sf::RoundedRectangleShape(sf::Vector2f(x_max+spacing, y_max+spacing), 10, 10);
     m_sidebar_background.setPosition(sf::Vector2f(0,0));
     m_sidebar_background.setFillColor(sf::Color(50,50,50));
-
-    GUI::Button algo_selector(sf::Vector2f(10,10), m_font, "Algorithm\nSelection", char_size);
-    m_algo_selector = algo_selector;
-    
-    GUI::Button clear_all (sf::Vector2f(10,80), m_font, "CE All", char_size);
-    m_clear_all = clear_all;
-
-    GUI::Button clear_edges (sf::Vector2f(10,110), m_font, "CE Edges", char_size);
-    m_clear_edges = clear_edges;
-    
-    GUI::Button reset_sg (sf::Vector2f(10,146), m_font, "CE S/G", char_size);
-    m_reset_sg_nodes = reset_sg;
 
     m_curr_algo.setFont(m_font);
     m_curr_algo.setString("Current Algo: "+m_algo);
@@ -36,9 +42,9 @@ bool GUI::Sidebar::mouseNearSidebar(sf::RenderWindow &window, int spacing) {
 }
 
 std::string GUI::Sidebar::update(Viz &gs_viz, sf::Event& e, sf::RenderWindow& window) {
-    m_algo_selector.update(e, window);
-    if(m_algo_selector.getState()) {
-        m_algo_selector.setState(false);
+    m_buttons.at(0).update(e, window);
+    if(m_buttons.at(0).getState()) {
+        m_buttons.at(0).setState(false);
         std::string previous = m_algo;
         AlgoSelect as(m_font, {"BFS", "DFS", "IDS", "A*", "Greedy"}, 2, 40);
         m_algo = as.getAlgo();
@@ -47,16 +53,16 @@ std::string GUI::Sidebar::update(Viz &gs_viz, sf::Event& e, sf::RenderWindow& wi
         m_curr_algo.setString("Current Algo: "+m_algo);
     }
 
-    m_clear_all.update(e, window);
-    if(m_clear_all.getState())
+    m_buttons.at(1).update(e, window);
+    if(m_buttons.at(1).getState())
         gs_viz.clearGraph(); 
 
-    m_clear_edges.update(e, window);
-    if(m_clear_edges.getState())
+    m_buttons.at(2).update(e, window);
+    if(m_buttons.at(2).getState())
         gs_viz.clearEdges(); 
     
-    m_reset_sg_nodes.update(e, window);
-    if(m_reset_sg_nodes.getState())
+    m_buttons.at(3).update(e, window);
+    if(m_buttons.at(3).getState())
         gs_viz.resetSGNodes(); 
 
     return m_algo;
@@ -64,10 +70,7 @@ std::string GUI::Sidebar::update(Viz &gs_viz, sf::Event& e, sf::RenderWindow& wi
 
 void GUI::Sidebar::draw(sf::RenderTarget& target, sf::RenderStates states) const {
     target.draw(m_sidebar_background, states);
-    target.draw(m_algo_selector, states);
-    target.draw(m_clear_all, states);
-    target.draw(m_clear_edges, states);
-    target.draw(m_reset_sg_nodes, states);
-
+    for(GUI::Button b : m_buttons)
+        target.draw(b, states);
     target.draw(m_curr_algo, states);
 }
