@@ -155,9 +155,10 @@ std::vector<std::vector<int>> GUI::Viz::getAdj() {
 }
 
 void GUI::Viz::clearGraph() {
-    m_adj = {};
-    m_nodes = {};
-    m_lines = {};
+    m_adj.clear();
+    m_nodes.clear();
+    m_node_txt.clear();
+    m_lines.clear();
     m_start_node = -1;
     m_goal_node = -1;
     m_can_edit = true;
@@ -195,8 +196,8 @@ void GUI::Viz::resetSGNodes() {
 }
 
 void GUI::Viz::resetSearch() {
-    m_path = {};
-    m_explore = {};
+    m_path.clear();
+    m_explore.clear();
     m_explore_idx = 0;
     m_path_idx = 0;
     for(auto node : m_nodes) {

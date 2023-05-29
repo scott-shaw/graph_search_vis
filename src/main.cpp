@@ -8,7 +8,7 @@
  * Implement more algorithms (IDS, A*, etc)
  * Fix clear operations (they are slow currently -- i.e., cant do anything for a few secs after)
  * Change sidebar button spacing to be relative to global position of previous button (then add a fixed amount of spacing between all buttons)
- *
+ * Make sidebar size adjust based on buttons (same as how algo selection window works)
  */
 
 int main() {
@@ -42,6 +42,7 @@ int main() {
                     }
                 case sf::Event::KeyPressed:
                     if(event.key.code == sf::Keyboard::Enter) {
+                        std::cout << "\nRunning search using " << algo << std::endl;
                         if(algo == "BFS")
                             gs_viz.runSearch(&Graph::BFS);
                         else if(algo == "DFS")
