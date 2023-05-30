@@ -16,15 +16,14 @@ int main() {
     window.setFramerateLimit(60);
     sf::Clock clock;
     
-    sf::Font dejavu_mono;
-    //dejavu_mono.loadFromFile("/usr/share/fonts/truetype/dejavu/DejaVuSansMono.ttf");
-    dejavu_mono.loadFromFile("/usr/share/fonts/truetype/ubuntu/Ubuntu-R.ttf");
+    sf::Font ubuntu_reg;
+    ubuntu_reg.loadFromFile("./data/Ubuntu-R.ttf");
     
     int radius = 20;
-    GUI::Viz gs_viz(radius, dejavu_mono);
+    GUI::Viz gs_viz(radius, ubuntu_reg);
     
     std::string algo = "BFS";
-    GUI::Sidebar sidebar(dejavu_mono, algo);
+    GUI::Sidebar sidebar(ubuntu_reg, algo);
 
     while (window.isOpen()) {
         sf::Time dt = clock.restart();
