@@ -1,6 +1,7 @@
 #include <iostream>
 #include "viz.h"
 #include "graph.h"
+#include "utils.h"
 
 GUI::Viz::Viz(const int &radius, const sf::Font &font) {
     m_radius = radius;
@@ -55,6 +56,11 @@ void GUI::Viz::addLine() {
             l[0].position = m_selected_line_coords.at(0);
             l[1].position = m_selected_line_coords.at(1);
             m_lines.push_back(l);
+            m_edge_weights.push_back(utils::distance(m_selected_line_coords.at(0).x, m_selected_line_coords.at(0).y, m_selected_line_coords.at(1).x, m_selected_line_coords.at(1).y));  
+            sf::Text txt(std::to_string(m_edge_weights.back()), m_font, m_radius*3/4);
+            txt.setFillColor(sf::Color(245,164,66));
+            txt.setPosition(utils::midpoint(m_selected_line_coords.at(0).x, m_selected_line_coords.at(0).y, m_selected_line_coords.at(1).x, m_selected_line_coords.at(1).y));
+            m_edge_txt.push_back(txt);
         }
         m_selected_line_nodes.clear();
         m_selected_line_coords.clear();
@@ -69,7 +75,7 @@ void GUI::Viz::runSearch(std::vector<std::vector<int>> (Graph::*search_path)(con
     resetSearch();
     m_can_edit = false;
     m_path.push_back(m_start_node);
-    Graph g(m_adj);
+    Graph g(m_adj, m_nodes);
     std::vector<std::vector<int>> path_explore = (g.*search_path)(m_start_node, m_goal_node);
     m_path.insert(m_path.end(), path_explore.at(0).begin(), path_explore.at(0).end());
     m_explore = path_explore.at(1);
@@ -211,5 +217,7 @@ void GUI::Viz::draw(sf::RenderTarget& target, sf::RenderStates states) const {
     for(auto it=m_nodes.begin();it!=m_nodes.end();it++)
         target.draw(**it, states);
     for(auto t : m_node_txt)
+        target.draw(t, states);
+    for(auto t : m_edge_txt)
         target.draw(t, states);
 }

@@ -4,19 +4,38 @@
 #include <iostream>
 #include <algorithm>
 #include "graph.h"
+#include "utils.h"
 
 struct Node {
     int m_state;
     std::vector<int> m_path;
 
-    Node(int s, const std::vector<int> & p){
+    Node(int s, const std::vector<int> & p) {
         m_state = s;
         m_path = p;
     }
 };
 
-Graph::Graph(const std::vector<std::vector<int>> & adj) {
+
+struct HNode {
+    int m_state;
+    int m_h;
+
+    HNode(int s, int h) {
+        m_state = s;
+        m_h = h;
+    }
+};
+
+struct CompareHNode {
+    bool operator()(HNode const & n1, HNode const & n2) {
+        return n1.m_h > n2.m_h;
+    }
+};
+
+Graph::Graph(const std::vector<std::vector<int>> & adj, const std::vector<sf::CircleShape*> &nodes) {
     m_adj = adj;
+    m_nodes = nodes;
 }
 
 std::vector<std::vector<int>> Graph::BFS(const int &s, const int &g) const {
@@ -103,5 +122,31 @@ std::vector<std::vector<int>> Graph::IDS(const int &s, const int &g) const {
     return {};
 }
 
+std::vector<std::vector<int>> Graph::A_STAR(const int &s, const int &g) const {
+    // precompute heuristics (NEED node positions to calc distances)
+    std::vector<HNode> h;
+    for(auto node : m_nodes) {
+    for(int i = 0; i < m_adj.size(); i++) {
+        h.push_back(HNode(i, utils::man_distance(m_nodes.at(i)->getPosition().x, m_nodes.at(i)->getPosition().y, m_nodes.at(g)->getPosition().x, m_nodes.at(g)->getPosition().y)));
+    }
 
+    std::priority_queue<HNode, std::vector<HNode>, CompareHNode> frontier(h.begin(), h.end());
+    std::vector<bool> explored(m_adj.size());
+    frontier.push(h.at(s));
+    explored.at(s) = true;
+    while(!frontier.empty()) {
+        HNode curr = frontier.top();
+        frontier.pop();
+
+        for(auto adj : m_adj.at(curr.m_state)) {
+            if(!explored.at(adj)) {
+                explored.at(adj) = true;
+                frontier.push(h.at(adj));
+            }
+        }
+
+
+    }
+    return {};
+}
 
