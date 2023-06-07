@@ -48,6 +48,8 @@ int main() {
                             gs_viz.runSearch(&Graph::DFS);
                         else if(algo == "IDS")
                             gs_viz.runSearch(&Graph::IDS);
+                        else if(algo == "A*")
+                            gs_viz.runSearch(&Graph::A_STAR);
                     }
                     else if(event.key.code == sf::Keyboard::Space) {
                         gs_viz.setStartGoalNode(window);

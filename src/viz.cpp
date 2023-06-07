@@ -56,7 +56,11 @@ void GUI::Viz::addLine() {
             l[0].position = m_selected_line_coords.at(0);
             l[1].position = m_selected_line_coords.at(1);
             m_lines.push_back(l);
-            m_edge_weights.push_back(utils::distance(m_selected_line_coords.at(0).x, m_selected_line_coords.at(0).y, m_selected_line_coords.at(1).x, m_selected_line_coords.at(1).y));  
+            m_edge_weights.push_back(utils::distance(m_selected_line_coords.at(0).x, m_selected_line_coords.at(0).y, m_selected_line_coords.at(1).x, m_selected_line_coords.at(1).y)); 
+            m_weight_adj = std::vector<std::vector<int>>(m_adj.size(), std::vector<int>(m_adj.size(), -1));
+            m_weight_adj.at(m_selected_line_nodes.at(0)).at(m_selected_line_nodes.at(1)) = m_edge_weights.back();
+            m_weight_adj.at(m_selected_line_nodes.at(1)).at(m_selected_line_nodes.at(0)) = m_edge_weights.back();
+
             sf::Text txt(std::to_string(m_edge_weights.back()), m_font, m_radius*3/4);
             txt.setFillColor(sf::Color(245,164,66));
             txt.setPosition(utils::midpoint(m_selected_line_coords.at(0).x, m_selected_line_coords.at(0).y, m_selected_line_coords.at(1).x, m_selected_line_coords.at(1).y));
@@ -75,7 +79,7 @@ void GUI::Viz::runSearch(std::vector<std::vector<int>> (Graph::*search_path)(con
     resetSearch();
     m_can_edit = false;
     m_path.push_back(m_start_node);
-    Graph g(m_adj, m_nodes);
+    Graph g(m_adj, m_nodes, m_weight_adj);
     std::vector<std::vector<int>> path_explore = (g.*search_path)(m_start_node, m_goal_node);
     m_path.insert(m_path.end(), path_explore.at(0).begin(), path_explore.at(0).end());
     m_explore = path_explore.at(1);
@@ -165,6 +169,7 @@ void GUI::Viz::clearGraph() {
     m_nodes.clear();
     m_node_txt.clear();
     m_lines.clear();
+    m_edge_txt.clear();
     m_start_node = -1;
     m_goal_node = -1;
     m_can_edit = true;
@@ -176,6 +181,7 @@ void GUI::Viz::clearEdges() {
     for(auto node : m_nodes)
         m_adj.push_back({});
     m_lines.clear();
+    m_edge_txt.clear();
     m_selected_line_nodes.clear();
     m_selected_line_coords.clear();
     m_can_edit = true;

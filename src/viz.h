@@ -60,6 +60,7 @@ namespace GUI {
         std::vector<sf::VertexArray> m_lines;
         std::vector<int> m_edge_weights;
         std::vector<sf::Text> m_edge_txt;
+        std::vector<std::vector<int>> m_weight_adj;
 
         // x,y coords of points selected to be end points for an edge
         std::vector<sf::Vector2f> m_selected_line_coords;
