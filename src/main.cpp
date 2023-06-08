@@ -5,9 +5,7 @@
 #include "sidebar.h"
 
 /* TODO
- * Implement more algorithms (IDS, A*, etc)
  * Fix clear operations (they are slow currently -- i.e., cant do anything for a few secs after)
- * Add edge weights based on length
  *
  */
 

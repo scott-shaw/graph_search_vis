@@ -1,9 +1,18 @@
 # graph_search_viz
 
 Visualizations of graph search algorithms such as:
+
+Non-Weighted
 - BFS
 - DFS
 - IDS
+
+Weighted
+- UCS
+- GREEDY
+- A*
+
+Edge weights are set using edge length
 
 Built using SFML
 ```

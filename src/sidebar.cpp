@@ -46,7 +46,7 @@ std::string GUI::Sidebar::update(Viz &gs_viz, sf::Event& e, sf::RenderWindow& wi
     if(m_buttons.at(0).getState()) {
         m_buttons.at(0).setState(false);
         std::string previous = m_algo;
-        AlgoSelect as(m_font, {"BFS", "DFS", "IDS", "A*", "Greedy", "UCS"}, 2, 40);
+        AlgoSelect as(m_font, {"BFS", "DFS", "IDS", "UCS", "Greedy", "A*"}, 2, 40);
         m_algo = as.getAlgo();
         if(m_algo.size() == 0)
             m_algo = previous;
