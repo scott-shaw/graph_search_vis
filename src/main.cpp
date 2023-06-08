@@ -50,6 +50,10 @@ int main() {
                             gs_viz.runSearch(&Graph::IDS);
                         else if(algo == "A*")
                             gs_viz.runSearch(&Graph::A_STAR);
+                        else if(algo == "Greedy")
+                            gs_viz.runSearch(&Graph::GREEDY);
+                        else if(algo == "UCS")
+                            gs_viz.runSearch(&Graph::UCS);
                     }
                     else if(event.key.code == sf::Keyboard::Space) {
                         gs_viz.setStartGoalNode(window);

@@ -9,7 +9,7 @@ GUI::Sidebar::Sidebar(const sf::Font &font, const std::string &algo, const int &
     std::vector<std::string> btn_titles{"Algorithm\nSelection", "CE All", "CE Edges", "CE S/G"};
     int y_pos = spacing;
     for(int i=0; i<btn_titles.size(); i++) {
-        GUI::Button b(sf::Vector2f(spacing,y_pos), m_font, btn_titles.at(i), char_size);
+        GUI::Button b(sf::Vector2f(spacing,y_pos), m_font, btn_titles.at(i), char_size, sf::Color(30, 0, 125));
         y_pos = b.getRect().getGlobalBounds().top + b.getRect().getGlobalBounds().height + spacing;
         m_buttons.push_back(b);
     }
@@ -46,7 +46,7 @@ std::string GUI::Sidebar::update(Viz &gs_viz, sf::Event& e, sf::RenderWindow& wi
     if(m_buttons.at(0).getState()) {
         m_buttons.at(0).setState(false);
         std::string previous = m_algo;
-        AlgoSelect as(m_font, {"BFS", "DFS", "IDS", "A*", "Greedy"}, 2, 40);
+        AlgoSelect as(m_font, {"BFS", "DFS", "IDS", "A*", "Greedy", "UCS"}, 2, 40);
         m_algo = as.getAlgo();
         if(m_algo.size() == 0)
             m_algo = previous;

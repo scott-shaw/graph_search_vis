@@ -8,7 +8,7 @@ namespace GUI {
     class Button : public sf::Drawable {
     public:
         Button();
-        Button(const sf::Vector2f &position, const sf::Font &font, const std::string &s, const int &char_size);
+        Button(const sf::Vector2f &position, const sf::Font &font, const std::string &s, const int &char_size, const sf::Color &button_color=sf::Color(25, 0, 200), const sf::Color &button_text_color=sf::Color(255,255,255));
         ~Button();
         bool onButton(sf::RenderWindow &window);
         void update(sf::Event &e, sf::RenderWindow &window);

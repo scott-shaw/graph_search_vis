@@ -31,6 +31,9 @@ void GUI::Viz::addNode(sf::Event e) {
         shape->setFillColor(sf::Color(100, 0, 50));
         m_nodes.push_back(shape);
         m_adj.push_back({});
+        m_weight_adj.push_back(std::vector<int>(m_nodes.size(), -1));
+        for(int i = 0; i < m_weight_adj.size()-1; i++)
+            m_weight_adj.at(i).push_back(-1);
         sf::Text txt(std::to_string(m_nodes.size()-1), m_font, m_radius*3/4);
         txt.setFillColor(sf::Color(245,164,66));
         txt.setPosition(shape->getPosition()+sf::Vector2f((shape->getGlobalBounds().width/2)-(txt.getLocalBounds().width/2), shape->getGlobalBounds().height/2-(txt.getLocalBounds().height)));
@@ -46,23 +49,28 @@ void GUI::Viz::selectNode(sf::Event e) {
     }
 }
 
-void GUI::Viz::addLine() {
+void GUI::Viz::addLine(const sf::Color &edge_color) {
     if(m_selected_line_nodes.size() == 2) {
         // Draw edge and add to adj list if not a self edge
         if(m_selected_line_nodes.at(0) != m_selected_line_nodes.at(1)) {
             m_adj.at(m_selected_line_nodes.at(0)).push_back(m_selected_line_nodes.at(1));
             m_adj.at(m_selected_line_nodes.at(1)).push_back(m_selected_line_nodes.at(0)); 
             sf::VertexArray l(sf::LinesStrip, 2);
+            l[0].color = edge_color;
+            l[1].color = edge_color;
             l[0].position = m_selected_line_coords.at(0);
             l[1].position = m_selected_line_coords.at(1);
             m_lines.push_back(l);
+           
+            // add edge weights
             m_edge_weights.push_back(utils::distance(m_selected_line_coords.at(0).x, m_selected_line_coords.at(0).y, m_selected_line_coords.at(1).x, m_selected_line_coords.at(1).y)); 
-            m_weight_adj = std::vector<std::vector<int>>(m_adj.size(), std::vector<int>(m_adj.size(), -1));
             m_weight_adj.at(m_selected_line_nodes.at(0)).at(m_selected_line_nodes.at(1)) = m_edge_weights.back();
             m_weight_adj.at(m_selected_line_nodes.at(1)).at(m_selected_line_nodes.at(0)) = m_edge_weights.back();
+            std::cout << "edge added: (" << m_selected_line_nodes.at(0) << " <--> " << m_selected_line_nodes.at(1) << "); weight="<< m_edge_weights.back() << std::endl;
 
+            // add edge weight text
             sf::Text txt(std::to_string(m_edge_weights.back()), m_font, m_radius*3/4);
-            txt.setFillColor(sf::Color(245,164,66));
+            txt.setFillColor(sf::Color(245,200,66));
             txt.setPosition(utils::midpoint(m_selected_line_coords.at(0).x, m_selected_line_coords.at(0).y, m_selected_line_coords.at(1).x, m_selected_line_coords.at(1).y));
             m_edge_txt.push_back(txt);
         }

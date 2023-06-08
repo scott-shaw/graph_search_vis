@@ -11,6 +11,8 @@ public:
     std::vector<std::vector<int>> DFS(const int &s, const int &g) const;
     std::vector<std::vector<int>> IDS(const int &s, const int &g) const;
     std::vector<std::vector<int>> A_STAR(const int &s, const int &g) const;
+    std::vector<std::vector<int>> GREEDY(const int &s, const int &g) const;
+    std::vector<std::vector<int>> UCS(const int &s, const int &g) const;
 
 private:
     std::vector<std::vector<int>> DLS(const int &s, const int &g, const int &depth) const;
@@ -18,6 +20,7 @@ private:
     std::vector<std::vector<int>> m_adj;
     std::vector<sf::CircleShape*> m_nodes;
     std::vector<std::vector<int>> m_weight_adj;
+    std::vector<int> m_heuristic;
 };
 
 #endif

@@ -21,7 +21,7 @@ namespace GUI {
         void selectNode(sf::Event e);
         
         // adds an edge using the selected nodes, resets selection
-        void addLine();
+        void addLine(const sf::Color &edge_color=sf::Color(70,70,70));
         
         // sets the node that collides with the current mouse position to the start node if not set
         // if start node is set, then the colliding node will be set as the goal node

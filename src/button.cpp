@@ -4,11 +4,11 @@ GUI::Button::Button() {}
 
 GUI::Button::~Button() {}
 
-GUI::Button::Button(const sf::Vector2f &position, const sf::Font &font, const std::string &s, const int &char_size) {
+GUI::Button::Button(const sf::Vector2f &position, const sf::Font &font, const std::string &s, const int &char_size, const sf::Color &button_color, const sf::Color & button_text_color) {
     m_position = position;
     m_font = font;
-    m_button_color = sf::Color(25, 0, 200);
-    m_text_color = sf::Color(255,255,255);
+    m_button_color = button_color;
+    m_text_color = button_text_color;
     m_state = false;
 
     m_text.setString(s);
